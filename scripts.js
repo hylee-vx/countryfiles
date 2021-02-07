@@ -73,6 +73,17 @@ const searchResult = function (searchValue) {
     }
 }
 
+// organises country data by region
+// potentially use to separate each section on webpage
+const regionalOverview = repo.reduce(function (regionSummary, country) {
+    regionSummary[country.region] = regionSummary[country.region] || [];
+    regionSummary[country.region].push({
+        Name: country.name,
+        Languages: country.languages
+    });
+    return regionSummary;
+}, {});
+
 
 //TESTS
 add({ name: 'Greenland', region: 'Americas', languages: 'Kalaallisut' });
@@ -84,3 +95,5 @@ console.log(repo);
 searchResult('Jupiter');
 searchResult('English');
 searchResult('Oceania');
+
+console.log(regionalOverview);

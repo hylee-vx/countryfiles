@@ -45,6 +45,34 @@ const add = function (newCountry) {
     }
 };
 
+// basic search function of repo object values
+const searchFilter = function (searchValue) {
+    return repo.filter(function (country) {
+        let nameMatch = searchValue === country.name,
+            regionMatch = searchValue === country.region,
+            languageMatch = country.languages.includes(searchValue);
+
+        if (nameMatch || regionMatch || languageMatch) {
+            return true;
+        } else {
+            return false;
+        }
+    });
+};
+
+// returns search result to console
+const searchResult = function (searchValue) {
+    let filterResult = searchFilter(searchValue);
+
+    if (filterResult.length === 0) {
+        console.log(`${searchValue} cannot be found`);
+        return false;
+    } else {
+        console.log(filterResult);
+        return true;
+    }
+}
+
 
 //TESTS
 add({ name: 'Greenland', region: 'Americas', languages: 'Kalaallisut' });
@@ -52,3 +80,7 @@ add('Atlantis');
 add({ name: 'Saturn', region: 'Space' });
 add({ name: 'Jupiter', region: 'Space', moons: 79 });
 console.log(repo);
+
+searchResult('Jupiter');
+searchResult('English');
+searchResult('Oceania');

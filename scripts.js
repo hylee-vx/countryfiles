@@ -84,6 +84,23 @@ const regionalOverview = repo.reduce(function (regionSummary, country) {
     return regionSummary;
 }, {});
 
+// 
+const displayDetails = country => console.log(country);
+
+const displayCountryList = function (country) {
+    let countryList = document.querySelector('.country-list'),
+        countryListItem = document.createElement('li'),
+        button = document.createElement('button');
+
+    button.textContent = country.name;
+    button.classList.add('button-main');
+    countryListItem.appendChild(button);
+    countryList.appendChild(countryListItem);
+
+    button.addEventListener('click', function () {
+        displayDetails(country);
+    });
+};
 
 //TESTS
 add({ name: 'Greenland', region: 'Americas', languages: 'Kalaallisut' });
@@ -97,3 +114,8 @@ searchResult('English');
 searchResult('Oceania');
 
 console.log(regionalOverview);
+//END TESTS
+
+repo.forEach(function (country) {
+    displayCountryList(country);
+});

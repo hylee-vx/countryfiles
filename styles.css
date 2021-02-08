@@ -1,0 +1,25 @@
+ul li {
+    list-style-type: none;
+}
+
+.button-main {
+    font-family: Helvetica, sans-serif;
+    font-weight: 700;
+    font-size: 1.8rem;
+    background-color: #b8d4e4;
+    color: #263238;
+    padding: 1rem;
+    margin: 0.5rem;
+    border-radius: 0.8rem;
+    border-bottom: 2px solid rgba(0,0,0,0.4);
+    transition: opacity 0.4s;
+}
+
+.button-main:hover, .button-main:focus {
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.button-main:focus {
+    outline: none;
+}

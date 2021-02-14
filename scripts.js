@@ -1,43 +1,79 @@
-const worldList = [];
+let worldList = [];
 
-//API
 const apiUrl = 'https://restcountries.eu/rest/v2/';
+const modalContainer = document.querySelector('.modal-container');
 
 const add = newCountry => worldList.push(newCountry);
 
 function loadApiList() {
+    // const showLoadingMessage
     return fetch(apiUrl).then(function (response) {
         return response.json();
     }).then(function (data) {
-        data.forEach(function (country) {
-            const languageArray = [];
-            const createLanguageArray = country.languages.map(function (language) {
-                languageArray.push(language.name);
-                return languageArray;
+        // const hideLoadingMessage
+        worldList = data.map(function (country) {
+            let getLanguageNames = country.languages.map(function (language) {
+                return language.name;
             });
 
             const nation = {
                 name: country.name,
-                region: country.region,
+                region: country.subregion,
                 capital: country.capital,
-                languages: languageArray, // why can't I call createLanguageArray here? returns array of index values, not language names
+                languages: getLanguageNames,
                 flag: country.flag
             };
-
-            add(nation);
-            console.log(nation);
+            return nation;
         });
     }).catch(function (error) {
+        // hideLoadingMessage
         console.error(error);
     })
 }
 
-// displays country name on buttons with click event
-const displayDetails = country => console.log(country);
+// creates modal
+const showModal = function (country) {
+    modalContainer.innerHTML = '';
+    let modal = document.createElement('div');
+    modal.classList.add('modal');
 
+    let closeButtonX = document.createElement('button');
+    closeButtonX.classList.add('modal-close');
+    closeButtonX.textContent = 'X';
+    closeButtonX.addEventListener('click', closeModal);
+
+    let countryName = document.createElement('h1');
+    countryName.classList.add('country-name-modal');
+    countryName.textContent = country.name;
+
+    let countryRegion = document.createElement('p');
+    countryRegion.textContent = country.subregion;
+
+    let countryCapital = document.createElement('p');
+    countryCapital.textContent = country.capital;
+
+    let countryLanguages = document.createElement('p');
+    countryLanguages.textContent = country.languages;
+
+    modal.appendChild(closeButtonX);
+    modal.appendChild(countryName);
+    modal.appendChild(countryRegion);
+    modal.appendChild(countryCapital);
+    modal.appendChild(countryLanguages);
+    modalContainer.appendChild(modal);
+
+    modalContainer.classList.add('is-visible');
+}
+
+// displays country name and flag in buttons
 const displayCountryList = function (country) {
-    let countryList = document.querySelector('.country-list'),
-        countryListItem = document.createElement('li');
+    let countryList = document.querySelector('.country-list');
+
+    let countryButton = document.createElement('button');
+    countryButton.classList.add('country-button');
+
+    let buttonContainer = document.createElement('div');
+    buttonContainer.classList.add('button-container');
 
     let countryName = document.createElement('p');
     countryName.textContent = country.name;
@@ -47,24 +83,34 @@ const displayCountryList = function (country) {
     countryImage.src = country.flag;
     countryImage.classList.add('country-image-main');
 
-    let buttonContainer = document.createElement('div');
-    buttonContainer.classList.add('button-container');
-
-    let button = document.createElement('button');
-    button.classList.add('button-main');
-
     buttonContainer.appendChild(countryName);
     buttonContainer.appendChild(countryImage);
-    button.appendChild(buttonContainer);
-    countryListItem.appendChild(button);
-    countryList.appendChild(countryListItem);
+    countryButton.appendChild(buttonContainer);
+    countryList.appendChild(countryButton);
 
-    button.addEventListener('click', function () {
+    countryButton.addEventListener('click', function () {
         displayDetails(country);
     });
 };
 
+// displays details in a modal
+const displayDetails = country =>
+    loadApiList(country).then(() => showModal(country));
 
+// closes modal
+const closeModal = () => modalContainer.classList.remove('is-visible');
+
+modalContainer.addEventListener('click', event => {
+    if (event.target === modalContainer) {
+        closeModal();
+    }
+});
+
+document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && modalContainer.classList.contains('is-visible')) {
+        closeModal();
+    };
+});
 
 loadApiList().then(function () {
     worldList.forEach(country => displayCountryList(country));

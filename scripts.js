@@ -2,34 +2,39 @@ let worldList = [];
 
 const apiUrl = 'https://restcountries.eu/rest/v2/';
 const modalContainer = document.querySelector('.modal-container');
+const loadingSpinner = document.querySelector('.loader');
 
-const add = newCountry => worldList.push(newCountry);
+const showLoadingSpinner = () => loadingSpinner.hidden = false;
+const hideLoadingSpinner = () => loadingSpinner.hidden = true;
 
-function loadApiList() {
-    // const showLoadingMessage
+const loadApiList = function () {
+    showLoadingSpinner();
     return fetch(apiUrl).then(function (response) {
         return response.json();
     }).then(function (data) {
-        // const hideLoadingMessage
         worldList = data.map(function (country) {
-            let getLanguageNames = country.languages.map(function (language) {
-                return language.name;
-            });
+            let getCurrencyNames = country.currencies.map(currency => currency.name);
+            let getLanguageNames = country.languages.map(language => language.name);
 
             const nation = {
                 name: country.name,
-                region: country.subregion,
+                region: country.region,
                 capital: country.capital,
+                area: country.area,
+                population: country.population,
+                borders: country.borders,
+                currencies: getCurrencyNames,
                 languages: getLanguageNames,
                 flag: country.flag
             };
+            hideLoadingSpinner();
             return nation;
         });
     }).catch(function (error) {
-        // hideLoadingMessage
+        hideLoadingSpinner();
         console.error(error);
-    })
-}
+    });
+};
 
 // creates modal
 const showModal = function (country) {
@@ -37,29 +42,65 @@ const showModal = function (country) {
     let modal = document.createElement('div');
     modal.classList.add('modal');
 
-    let closeButtonX = document.createElement('button');
-    closeButtonX.classList.add('modal-close');
-    closeButtonX.textContent = 'X';
-    closeButtonX.addEventListener('click', closeModal);
+    let modalCloseButton = document.createElement('button');
+    modalCloseButton.classList.add('modal-close-button');
+    modalCloseButton.textContent = 'X';
+    modalCloseButton.addEventListener('click', closeModal);
 
     let countryName = document.createElement('h1');
-    countryName.classList.add('country-name-modal');
+    countryName.classList.add('country-name');
     countryName.textContent = country.name;
 
+    let countryMapContainer = document.createElement('div');
+    countryMapContainer.classList.add('country-map-container');
+
+    let countryMap = document.createElement('iframe');
+    countryMap.src = `https://www.google.com/maps/embed/v1/place?key=AIzaSyAbg-EXRXLkHNQQnZ--E45nvlUmdY75A1A&q=${country.name}`;
+    countryMap.classList.add('country-map');
+
+    let modalTextContainer = document.createElement('div');
+    modalTextContainer.classList.add('modal-text-container');
+
     let countryRegion = document.createElement('p');
-    countryRegion.textContent = country.subregion;
+    countryRegion.innerHTML = `<span class="modal-subheading">Region:</span> ${country.region}`;
 
     let countryCapital = document.createElement('p');
-    countryCapital.textContent = country.capital;
+    countryCapital.innerHTML = `<span class="modal-subheading">Capital:</span> ${country.capital}`;
+
+    let countryArea = document.createElement('p');
+    countryArea.innerHTML = `<span class="modal-subheading">Area:</span> ${country.area}km`;
+
+    let countryPopulation = document.createElement('p');
+    countryPopulation.innerHTML = `<span class="modal-subheading">Population:</span> ${country.population}`;
 
     let countryLanguages = document.createElement('p');
-    countryLanguages.textContent = country.languages;
+    let countryLanguagesFormatted = country.languages.join(', ');
+    countryLanguages.innerHTML = `<span class="modal-subheading">Languages:</span> ${countryLanguagesFormatted}`;
 
-    modal.appendChild(closeButtonX);
+    let countryCurrencies = document.createElement('p');
+    countryCurrencies.innerHTML = `<span class="modal-subheading">Currencies:</span> ${country.currencies}`;
+
+    let countryNeighbours = document.createElement('p');
+    let countryNeighboursFormatted = country.borders.join(', ');
+    countryNeighbours.innerHTML = `<span class="modal-subheading">Borders with</span> ${countryNeighboursFormatted}`;
+
+    let capitalTimezone = document.createElement('p');
+    capitalTimezone.classList.add('capital-current-time');
+    capitalTimezone.innerHTML = `<span class="modal-subheading">Current time in ${country.capital}:</span> placeholder`;
+
+    modal.appendChild(modalCloseButton);
     modal.appendChild(countryName);
-    modal.appendChild(countryRegion);
-    modal.appendChild(countryCapital);
-    modal.appendChild(countryLanguages);
+    countryMapContainer.appendChild(countryMap);
+    modal.appendChild(countryMapContainer);
+    modalTextContainer.appendChild(countryRegion);
+    modalTextContainer.appendChild(countryCapital);
+    modalTextContainer.appendChild(countryArea);
+    modalTextContainer.appendChild(countryPopulation);
+    modalTextContainer.appendChild(countryLanguages);
+    modalTextContainer.appendChild(countryCurrencies);
+    modalTextContainer.appendChild(countryNeighbours);
+    modal.appendChild(modalTextContainer);
+    modal.appendChild(capitalTimezone);
     modalContainer.appendChild(modal);
 
     modalContainer.classList.add('is-visible');
@@ -72,20 +113,16 @@ const displayCountryList = function (country) {
     let countryButton = document.createElement('button');
     countryButton.classList.add('country-button');
 
-    let buttonContainer = document.createElement('div');
-    buttonContainer.classList.add('button-container');
+    let countryImage = document.createElement('img');
+    countryImage.src = country.flag;
+    countryImage.classList.add('country-image-main');
 
     let countryName = document.createElement('p');
     countryName.textContent = country.name;
     countryName.classList.add('country-name-main');
 
-    let countryImage = document.createElement('img');
-    countryImage.src = country.flag;
-    countryImage.classList.add('country-image-main');
-
-    buttonContainer.appendChild(countryName);
-    buttonContainer.appendChild(countryImage);
-    countryButton.appendChild(buttonContainer);
+    countryButton.appendChild(countryImage);
+    countryButton.appendChild(countryName);
     countryList.appendChild(countryButton);
 
     countryButton.addEventListener('click', function () {

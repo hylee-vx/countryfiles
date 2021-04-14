@@ -124,6 +124,7 @@ const displayCountryList = function (country) {
     let countryName = document.createElement('p');
     countryName.textContent = country.name;
     countryName.classList.add('country-name-main');
+    countryName.classList.add('line-clamp');
 
     imageContainer.appendChild(countryImage);
     countryButton.appendChild(imageContainer);

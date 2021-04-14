@@ -107,13 +107,13 @@ body {
     text-align: left;
 }
 
-.country-name {
+.modal-heading {
     grid-area: 1 / 1 / span 1 / span 2;
     font-size: 2rem;
     padding-left: 2rem; 
 }
 
-.country-map-container {
+.modal-map-container {
     grid-area: 2 / 1 / span 1 / span 1;
     padding: 1.5rem 2rem;
 }
@@ -133,7 +133,7 @@ body {
     font-weight: 600;
 }
 
-.capital-current-time {
+.modal-current-time {
     grid-area: 3 / 1 / span 1 / -1;
     padding: 0rem 2rem;
 }

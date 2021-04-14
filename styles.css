@@ -57,7 +57,6 @@ body {
     justify-content: center;
     align-items: center;
     height: 42px;
-    /* text-align: center; */
     padding: 0.2rem;
     margin: 0.5rem auto;
 }
@@ -117,27 +116,27 @@ body {
 .modal {
     margin: auto;
     display: grid;
-    grid-template: 10% 80% 10% / 3fr 2fr;
+    grid-template: 10% 45% 1fr 1fr / 1fr 1.5rem 1fr 1.5rem;
     box-sizing: border-box;
     background:#fff;
-    width: 900px;
-    height: 750px;
+    width: 85%;
     font-size: 1.2rem;
-    padding: 20px 30px;
+    padding: 2rem;
     box-shadow: 0 10px 10px 10px rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
+    border-radius: 0.3rem;
     text-align: left;
 }
 
 .modal-heading {
-    grid-area: 1 / 1 / span 1 / span 2;
+    grid-area: 1 / 1 / span 1 / span 4;
     font-size: 2rem;
     padding-left: 2rem; 
 }
 
 .modal-map-container {
-    grid-area: 2 / 1 / span 1 / span 1;
-    padding: 1.5rem 2rem;
+    grid-area: 2 / 1 / span 1 / span 4;
+    padding: 2rem;
+    padding-bottom: 0.5rem;
 }
 
 .country-map {
@@ -147,31 +146,35 @@ body {
     frameborder: none;
 }
 
-.modal-text-container {
-    grid-area: 2 / 2 / span 1 / span 1;
-    padding: 1.5rem 2rem;
-}
-.modal-subheading {
-    font-weight: 600;
+.modal-text-container-a {
+    grid-area: 3 / 1 / span 2 / span 2;
+    padding: 1rem 2rem;
 }
 
-.modal-current-time {
+.modal-text-container-b {
+    grid-area: 3 / 2 / span 2 / span 2;
+    padding: 1rem 2rem;
+}
+/* .modal-subheading {
+    font-weight: 600;
+} */
+
+/* .modal-current-time {
     grid-area: 3 / 1 / span 1 / -1;
     padding: 0rem 2rem;
-}
+} */
 
 .modal-close-button {
-    text-align: right;
-    grid-area: 1 / 2 / span 1 / span 1;
-    display: block;
-    margin-left: auto;
-    margin-top: 1.6rem;
-    margin-bottom: 1.6rem;
+    grid-area: 1 / 4 / span 1 / span 1;
+    width: 1.5rem;
+    height: 1.5rem;
+    text-align: center;
     background-color: #eee;
     color: #333;
     font-weight: 600;
+    border: 0.1rem solid #333;
     border-radius: 5px;
-    transition: opacity 0.4s;
+    transition: opacity 0.4s;   
 }
 
 .modal-close-button:hover, .modal-close-button:focus {
@@ -193,5 +196,43 @@ body {
     .country-name-main {
         height: 35px;
         margin: 0.3rem auto;
+    }
+
+    .modal {
+        width: 90%;
+        padding: 1rem;
+        font-size: 1rem;
+    }
+
+    .modal-heading {
+        font-size: 1.8rem;
+        padding-left: 1rem; 
+    }
+
+    .modal-map-container {
+        padding: 1rem;
+        padding-bottom: 0;
+    }
+
+    .modal-text-container-a {
+        grid-area: 3 / 1 / span 1 / span 4;
+        padding: 1rem;
+        padding-bottom: 0;
+    }
+
+    .modal-text-container-a > p:last-child {
+        margin-block-end: 0;
+    }
+    
+    .modal-text-container-b {
+        grid-area: 4 / 1 / span 1 / span 4;
+        padding: 1rem;
+        padding-top: 0;
+    }
+}
+
+@media (min-width: 1200px) {
+    .modal {
+        width: 50%;
     }
 }

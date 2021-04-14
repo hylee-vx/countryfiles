@@ -60,8 +60,11 @@ const showModal = function (country) {
     countryMap.src = `https://www.google.com/maps/embed/v1/place?key=AIzaSyAbg-EXRXLkHNQQnZ--E45nvlUmdY75A1A&q=${country.name}`;
     countryMap.classList.add('country-map');
 
-    let modalTextContainer = newDomElement('div');
-    modalTextContainer.classList.add('modal-text-container');
+    let modalTextContainerA = newDomElement('div');
+    modalTextContainerA.classList.add('modal-text-container-a');
+
+    let modalTextContainerB = newDomElement('div');
+    modalTextContainerB.classList.add('modal-text-container-b');
 
     let countryDetailsTemplate = (subheading, countryProperty) => `${subheading}: ${countryProperty}`;
 
@@ -86,22 +89,23 @@ const showModal = function (country) {
     let countryCurrencies = newDomElement('p');
     countryCurrencies.innerHTML = countryDetailsTemplate('Currencies', country.currencies);
 
-    let capitalTimezone = newDomElement('p');
-    capitalTimezone.classList.add('modal-current-time');
-    capitalTimezone.innerHTML = `Current time in ${country.capital}: placeholder`;
+    // let capitalTimezone = newDomElement('p');
+    // capitalTimezone.classList.add('modal-current-time');
+    // capitalTimezone.innerHTML = `Current time in ${country.capital}: placeholder`;
 
     modal.appendChild(modalCloseButton);
     modal.appendChild(modalHeading);
     modalMapContainer.appendChild(countryMap);
     modal.appendChild(modalMapContainer);
-    modalTextContainer.appendChild(countryRegion);
-    modalTextContainer.appendChild(countryCapital);
-    modalTextContainer.appendChild(countryArea);
-    modalTextContainer.appendChild(countryPopulation);
-    modalTextContainer.appendChild(countryLanguages);
-    modalTextContainer.appendChild(countryCurrencies);
-    modal.appendChild(modalTextContainer);
-    modal.appendChild(capitalTimezone);
+    modalTextContainerA.appendChild(countryRegion);
+    modalTextContainerA.appendChild(countryCapital);
+    modalTextContainerA.appendChild(countryArea);
+    modalTextContainerA.appendChild(countryPopulation);
+    modalTextContainerB.appendChild(countryLanguages);
+    modalTextContainerB.appendChild(countryCurrencies);
+    modal.appendChild(modalTextContainerA);
+    modal.appendChild(modalTextContainerB);
+    // modal.appendChild(capitalTimezone);
     modalContainer.appendChild(modal);
 
     modalContainer.classList.add('is-visible');
